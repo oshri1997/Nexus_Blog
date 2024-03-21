@@ -10,9 +10,9 @@ export default function Header() {
     <Navbar className="border-b-2">
       <Link
         to="/"
-        className="self-center px-2 py-1 text-sm font-semibold rounded-lg bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 whitespace-nowrap sm:text-xl dark:text-white"
+        className="self-center  whitespace-nowrap text-white text-base sm:text-xl   px-2 py-1 rounded-lg   bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  font-semibold  dark:text-white"
       >
-        <span className="text-white ">Nexus Blog</span>
+        Nexus Blog
       </Link>
       <form>
         <TextInput
@@ -31,7 +31,9 @@ export default function Header() {
           <FaMoon />
         </Button>
         <Link to="/sign-in">
-          <Button gradientDuoTone="purpleToBlue">Sign In</Button>
+          <Button gradientDuoTone="purpleToBlue" outline>
+            Sign In
+          </Button>
         </Link>
         <Navbar.Toggle />
       </div>
