@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signInFailure, signInStart, signInSuccess } from "../redux/user/userSlice";
 import { RootState } from "../redux/store";
+import OAuth from "../components/OAuth";
 
 interface User {
   email: string;
@@ -12,9 +13,10 @@ interface User {
 
 export default function SignIn() {
   const [formData, setFormData] = useState<User>({ email: "", password: "" });
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const error = useSelector((state: RootState) => state.user.error);
+
   const loading = useSelector((state: RootState) => state.user.loading);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +27,7 @@ export default function SignIn() {
     event.preventDefault();
 
     if (!formData.email || !formData.password) {
-      return dispatch(signInFailure("Please fill in all fields"));
+      return setError("Please fill in all the fields.");
     }
     try {
       dispatch(signInStart());
@@ -38,13 +40,15 @@ export default function SignIn() {
       });
       const data = await response.json();
       if (data.success === false) {
-        return dispatch(signInFailure(data.message));
+        return setError(data.message);
       }
-      dispatch(signInSuccess(data));
-      setFormData({ email: "", password: "" });
-      navigate("/");
+      if (response.ok) {
+        dispatch(signInSuccess(data));
+        setFormData({ email: "", password: "" });
+        navigate("/");
+      }
     } catch (error) {
-      dispatch(signInFailure("Something went wrong. Please try again later."));
+      setError("Something went wrong. Please try again later.");
     }
   };
 
@@ -96,11 +100,12 @@ export default function SignIn() {
                 "Sign In"
               )}
             </Button>
+            <OAuth />
           </form>
 
           <div className="flex gap-2 text-sm mt-5">
             <span>Don't have an account?</span>
-            <Link to="/sign-in" className="text-blue-500">
+            <Link to="/sign-up" className="text-blue-500">
               Sign Up
             </Link>
           </div>

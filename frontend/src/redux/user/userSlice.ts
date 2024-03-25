@@ -1,15 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-export interface CounterState {
+export interface authState {
   currentUser: object | null;
-  error: string | null;
   loading: boolean;
 }
 
-const initialState: CounterState = {
+const initialState: authState = {
   currentUser: null,
-  error: null,
   loading: false,
 };
 
@@ -19,14 +17,12 @@ export const userSlice = createSlice({
   reducers: {
     signInStart: (state) => {
       state.loading = true;
-      state.error = null;
     },
     signInSuccess: (state, action: PayloadAction<object>) => {
       state.currentUser = action.payload;
       state.loading = false;
     },
-    signInFailure: (state, action: PayloadAction<string>) => {
-      state.error = action.payload;
+    signInFailure: (state) => {
       state.loading = false;
     },
   },
