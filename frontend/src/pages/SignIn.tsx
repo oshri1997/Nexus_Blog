@@ -1,6 +1,9 @@
 import { Alert, Button, Label, TextInput, Spinner } from "flowbite-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { signInFailure, signInStart, signInSuccess } from "../redux/user/userSlice";
+import { RootState } from "../redux/store";
 
 interface User {
   email: string;
@@ -9,9 +12,10 @@ interface User {
 
 export default function SignIn() {
   const [formData, setFormData] = useState<User>({ email: "", password: "" });
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const error = useSelector((state: RootState) => state.user.error);
+  const loading = useSelector((state: RootState) => state.user.loading);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
@@ -19,12 +23,12 @@ export default function SignIn() {
   };
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setError(null);
+
     if (!formData.email || !formData.password) {
-      return setError("Please fill in all fields");
+      return dispatch(signInFailure("Please fill in all fields"));
     }
     try {
-      setLoading(true);
+      dispatch(signInStart());
       const response = await fetch("/api/auth/signin", {
         method: "POST",
         headers: {
@@ -34,14 +38,13 @@ export default function SignIn() {
       });
       const data = await response.json();
       if (data.success === false) {
-        return setError(data.message);
+        return dispatch(signInFailure(data.message));
       }
+      dispatch(signInSuccess(data));
       setFormData({ email: "", password: "" });
       navigate("/");
     } catch (error) {
-      setError("Something went wrong. Please try again later.");
-    } finally {
-      setLoading(false);
+      dispatch(signInFailure("Something went wrong. Please try again later."));
     }
   };
 
@@ -49,7 +52,7 @@ export default function SignIn() {
     <div className="min-h-screen mt-20">
       <div className="flex p-3 gap-5 max-w-3xl mx-auto flex-col md:flex-row md:items-center">
         <div className="flex-1">
-          {/* left site */}
+          {/* left side */}
           <Link
             to="/"
             className="text-white text-4xl px-2 py-1 rounded-lg  bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  font-bold  dark:text-white"
@@ -60,7 +63,7 @@ export default function SignIn() {
             This is a blog where you can share your thoughts and ideas with the world.
           </p>
         </div>
-        {/* right site */}
+        {/* right side */}
         <div className="flex-1">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div>
