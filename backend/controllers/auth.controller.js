@@ -27,23 +27,54 @@ export const signInController = async (req, res, next) => {
     return next({ message: "Please fill in all fields", statusCode: 400 });
   }
   try {
-    const emailExists = await User.findOne({ email });
-    if (!emailExists) {
+    const userExists = await User.findOne({ email });
+    if (!userExists) {
       return next({ message: "Email does not exist", statusCode: 400 });
     }
-    const passwordMatch = comparePassword(password, emailExists.password);
+    const passwordMatch = comparePassword(password, userExists.password);
     if (!passwordMatch) {
       return next({ message: "Invalid password", statusCode: 400 });
     }
-    const userClone = { ...emailExists._doc };
+    const userClone = { ...userExists._doc };
     delete userClone.password; // remove password from user object
-    const token = jwt.sign({ id: emailExists._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ id: userExists._id }, process.env.JWT_SECRET);
     res
       .status(200)
       .cookie("access_token", token, {
         httpOnly: true,
       })
       .json(userClone);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const googleSignInController = async (req, res, next) => {
+  const { email, name, googlePhotoUrl } = req.body;
+  if (!email || !name || email == "" || name == "") {
+    return next({ message: "Please fill in all fields", statusCode: 400 });
+  }
+  try {
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      const token = jwt.sign({ id: userExists._id }, process.env.JWT_SECRET);
+      const userClone = { ...userExists._doc };
+      delete userClone.password;
+      res.status(200).cookie("access_token", token, { httpOnly: true }).json(userClone);
+    } else {
+      const generetedPassword = hashedPassword(email);
+      const user = new User({
+        username: name.toLowerCase().split(" ").join("") + Math.random().toString(9).slice(-4), //
+        email,
+        password: generetedPassword,
+        profilePicture: googlePhotoUrl,
+      });
+      await user.save();
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      const userClone = { ...user._doc };
+      delete userClone.password;
+      res.status(200).cookie("access_token", token, { httpOnly: true }).json(userClone);
+    }
   } catch (error) {
     next(error);
   }

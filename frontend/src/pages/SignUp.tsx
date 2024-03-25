@@ -1,6 +1,7 @@
 import { Alert, Button, Label, TextInput, Spinner } from "flowbite-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 
 interface User {
   username: string;
@@ -37,8 +38,10 @@ export default function SignUp() {
       if (data.success === false) {
         return setError(data.message);
       }
-      setFormData({ username: "", email: "", password: "" });
-      navigate("/sign-in");
+      if (response.ok) {
+        setFormData({ username: "", email: "", password: "" });
+        navigate("/sign-in");
+      }
     } catch (error) {
       setError("Something went wrong. Please try again later.");
     } finally {
@@ -104,6 +107,7 @@ export default function SignUp() {
                 "Sign Up"
               )}
             </Button>
+            <OAuth />
           </form>
 
           <div className="flex gap-2 text-sm mt-5">

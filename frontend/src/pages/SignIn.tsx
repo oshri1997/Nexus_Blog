@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signInFailure, signInStart, signInSuccess } from "../redux/user/userSlice";
 import { RootState } from "../redux/store";
+import OAuth from "../components/OAuth";
 
 interface User {
   email: string;
@@ -40,9 +41,11 @@ export default function SignIn() {
       if (data.success === false) {
         return dispatch(signInFailure(data.message));
       }
-      dispatch(signInSuccess(data));
-      setFormData({ email: "", password: "" });
-      navigate("/");
+      if (response.ok) {
+        dispatch(signInSuccess(data));
+        setFormData({ email: "", password: "" });
+        navigate("/");
+      }
     } catch (error) {
       dispatch(signInFailure("Something went wrong. Please try again later."));
     }
@@ -96,11 +99,12 @@ export default function SignIn() {
                 "Sign In"
               )}
             </Button>
+            <OAuth />
           </form>
 
           <div className="flex gap-2 text-sm mt-5">
             <span>Don't have an account?</span>
-            <Link to="/sign-in" className="text-blue-500">
+            <Link to="/sign-up" className="text-blue-500">
               Sign Up
             </Link>
           </div>
