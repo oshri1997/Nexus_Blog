@@ -13,9 +13,10 @@ interface User {
 
 export default function SignIn() {
   const [formData, setFormData] = useState<User>({ email: "", password: "" });
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const error = useSelector((state: RootState) => state.user.error);
+
   const loading = useSelector((state: RootState) => state.user.loading);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,7 +27,7 @@ export default function SignIn() {
     event.preventDefault();
 
     if (!formData.email || !formData.password) {
-      return dispatch(signInFailure("Please fill in all fields"));
+      return setError("Please fill in all the fields.");
     }
     try {
       dispatch(signInStart());
@@ -39,7 +40,7 @@ export default function SignIn() {
       });
       const data = await response.json();
       if (data.success === false) {
-        return dispatch(signInFailure(data.message));
+        return setError(data.message);
       }
       if (response.ok) {
         dispatch(signInSuccess(data));
@@ -47,7 +48,7 @@ export default function SignIn() {
         navigate("/");
       }
     } catch (error) {
-      dispatch(signInFailure("Something went wrong. Please try again later."));
+      setError("Something went wrong. Please try again later.");
     }
   };
 
