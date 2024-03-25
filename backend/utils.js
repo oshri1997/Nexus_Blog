@@ -10,14 +10,16 @@ export const connectDB = async () => {
     process.exit(1);
   }
 };
-export const hashedPassword = async (password) => {
+export const hashedPassword = (password) => {
   const salt = bcryptjs.genSaltSync(10);
-  return await bcryptjs.hash(password, salt);
+  return bcryptjs.hashSync(password, salt);
 };
-
-export const errorHandler = (err, req, res, next) => {
-  const statusCode = err.statusCode || 500;
-  const message = err.message;
+export const comparePassword = (password, hashedPassword) => {
+  return bcryptjs.compareSync(password, hashedPassword);
+};
+export const errorHandler = (error, req, res, next) => {
+  const statusCode = error.statusCode || 500;
+  const message = error.message;
   res.status(statusCode).json({
     success: false,
     statusCode,
