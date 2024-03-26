@@ -1,6 +1,6 @@
 import { Alert, Button, Label, TextInput, Spinner } from "flowbite-react";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signInStart, signInSuccess } from "../redux/user/userSlice";
 import { RootState } from "../redux/store";
@@ -16,9 +16,12 @@ export default function SignIn() {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const { currentUser } = useSelector((state: RootState) => state.user);
   const loading = useSelector((state: RootState) => state.user.loading);
 
+  if (currentUser) {
+    return <Navigate to="/" />;
+  }
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
     setFormData({ ...formData, [id]: value.trim() });
