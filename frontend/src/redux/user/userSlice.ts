@@ -7,7 +7,7 @@ interface User {
   profilePicture: string;
 }
 
-export interface authState {
+interface authState {
   currentUser: User | null;
   loading: boolean;
 }
