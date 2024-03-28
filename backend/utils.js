@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcryptjs from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const connectDB = async () => {
   try {
@@ -24,5 +25,15 @@ export const errorHandler = (error, req, res, next) => {
     success: false,
     statusCode,
     message,
+  });
+};
+
+export const verifyToken = (req, res, next) => {
+  const token = req.cookies.access_token;
+  if (!token) return next({ message: "Access Denied", statusCode: 401 });
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return next({ message: "Invalid Token", statusCode: 401 });
+    req.user = user;
+    next();
   });
 };
