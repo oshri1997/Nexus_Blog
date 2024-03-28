@@ -23,6 +23,7 @@ const App = () => {
         <Route path="/sign-up" element={<SignUp />} />
 
         <Route path="/projects" element={<Projects />} />
+        <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
       <FooterComponent />
     </BrowserRouter>
