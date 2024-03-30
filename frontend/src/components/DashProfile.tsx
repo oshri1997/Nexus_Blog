@@ -1,12 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { Alert, Button, TextInput } from "flowbite-react";
+import { Button, TextInput } from "flowbite-react";
 import { useState, useRef, useEffect } from "react";
+import React from "react";
+import "react-toastify/dist/ReactToastify.css";
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { updateFailure, updateStart, updateSuccess } from "../redux/user/userSlice";
+import { toastF } from "../helpers";
 
 interface FormData {
   username?: string;
@@ -22,34 +25,23 @@ export default function DashProfile() {
   const [imageFileUrl, setImageFileUrl] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const [imageFileProgress, setImageFileProgress] = useState<number>(0);
-  const [imageFileError, setImageFileError] = useState<string | null>(null);
-  const [imageFileUploading, setImageFileUploading] = useState<boolean>(false);
+  const [imageFileUploading, setImageFileUploading] = useState<boolean>(false); //
   const [formData, setFormData] = useState<FormData | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [updateUserSuccess, setUpdateUserSuccess] = useState<boolean | null>(null);
 
+  //handleImageChange function to handle image change
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    setImageFileError("");
+
     if (file?.type.startsWith("image") && file.size < 2 * 1024 * 1024) {
       setImageFile(file);
       setImageFileUrl(URL.createObjectURL(file));
     } else {
-      setImageFileError("Could not upload image (max size 2MB)");
+      toastF("Could not upload image (max size 2MB)", "error");
     }
   };
+  //uploadImage function to upload image to firebase storage
   const uploadImage = async () => {
     setImageFileUploading(true);
-    // service firebase.storage {
-    //     match /b/{bucket}/o {
-    //       match /{allPaths=**} {
-    //         allow read;
-    //         allow write : if
-    //         request.resource.size<2*1024*1024 &&
-    //         request.resource.contentType.matches('image/.*');
-    //       }
-    //     }
-    //   }
     const storage = getStorage(app);
     const fileName = new Date().getTime() + imageFile?.name!;
     const storageRef = ref(storage, fileName);
@@ -61,8 +53,7 @@ export default function DashProfile() {
         setImageFileProgress(Number(progress.toFixed(0)));
       },
       () => {
-        // error
-        setImageFileError("Could not upload image (max size 2MB)");
+        toastF("Could not upload image, please try again.", "error");
         setImageFileUploading(false);
       },
       () => {
@@ -80,17 +71,15 @@ export default function DashProfile() {
       uploadImage();
     }
   }, [imageFile]);
-
+  //handleChange function to handle change in form
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [event.target.id]: event.target.value });
   };
-
+  //handleSubmit function to handle submit in form
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setUpdateUserSuccess(null);
-    setError(null);
-    if (!formData) return setError("Please fill in the form.");
-    if (imageFileUploading) return setError("Please wait until the image is uploaded.");
+    if (!formData) return toastF("Please fill in the form.", "info");
+    if (imageFileUploading) return toastF("Please wait until the image is uploaded.", "info");
     try {
       dispatch(updateStart());
       const res = await fetch(`/api/user/update/${currentUser?._id}`, {
@@ -103,15 +92,14 @@ export default function DashProfile() {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.message);
-        setUpdateUserSuccess(false);
+        toastF("Something went wrong. Please try again.", "error");
         return dispatch(updateFailure());
       }
       dispatch(updateSuccess(data));
-      setUpdateUserSuccess(true);
+      toastF("Profile updated successfully!.", "success");
       setFormData(null);
     } catch (error) {
-      setError("Something went wrong. Please try again later.");
+      toastF("Something went wrong. Please try again.", "error");
       dispatch(updateFailure());
     }
   };
@@ -156,7 +144,6 @@ export default function DashProfile() {
             alt="profilePicture"
           />
         </div>
-        {imageFileError && <Alert color="failure">{imageFileError}</Alert>}
         <TextInput
           type="text"
           id="username"
@@ -181,8 +168,7 @@ export default function DashProfile() {
         <Button gradientDuoTone="purpleToBlue" outline type="submit">
           Update
         </Button>
-        {error && <Alert color="failure">{error}</Alert>}
-        {updateUserSuccess && <Alert color="success">Profile updated successfully.</Alert>}
+        {/* {updateUserSuccess && <Alert color="success">Profile updated successfully.</Alert>} */}
       </form>
       <div className="text-red-500 mt-5">
         <span className="cursor-pointer">Delete Account</span>

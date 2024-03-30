@@ -8,10 +8,15 @@ import Projects from "./pages/Projects";
 import Header from "./components/Header";
 import FooterComponent from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { ToastContainer } from "react-toastify";
+import { useSelector } from "react-redux";
+import { RootState } from "./redux/store";
 
 const App = () => {
+  const { theme } = useSelector((state: RootState) => state.theme);
   return (
     <BrowserRouter>
+      <ToastContainer theme={theme} />
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />

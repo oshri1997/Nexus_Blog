@@ -1,10 +1,11 @@
-import { Alert, Button, Label, TextInput, Spinner } from "flowbite-react";
+import { Button, Label, TextInput, Spinner } from "flowbite-react";
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { signInStart, signInSuccess } from "../redux/user/userSlice";
+import { signInFailure, signInStart, signInSuccess } from "../redux/user/userSlice";
 import { RootState } from "../redux/store";
 import OAuth from "../components/OAuth";
+import { toastF } from "../helpers";
 
 interface User {
   email: string;
@@ -13,7 +14,6 @@ interface User {
 
 export default function SignIn() {
   const [formData, setFormData] = useState<User>({ email: "", password: "" });
-  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state: RootState) => state.user);
@@ -28,9 +28,8 @@ export default function SignIn() {
   };
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     if (!formData.email || !formData.password) {
-      return setError("Please fill in all the fields.");
+      return toastF("Please fill all the fields", "info");
     }
     try {
       dispatch(signInStart());
@@ -43,15 +42,17 @@ export default function SignIn() {
       });
       const data = await response.json();
       if (data.success === false) {
-        return setError(data.message);
+        dispatch(signInFailure());
+        return toastF(data.message, "error");
       }
       if (response.ok) {
         dispatch(signInSuccess(data));
-        setFormData({ email: "", password: "" });
+        toastF("Signed in successfully!", "success");
         navigate("/");
       }
     } catch (error) {
-      setError("Something went wrong. Please try again later.");
+      signInFailure();
+      toastF("Something went wrong. Please try again.", "error");
     }
   };
 
@@ -105,18 +106,12 @@ export default function SignIn() {
             </Button>
             <OAuth />
           </form>
-
           <div className="flex gap-2 text-sm mt-5">
             <span>Don't have an account?</span>
             <Link to="/sign-up" className="text-blue-500">
               Sign Up
             </Link>
           </div>
-          {error && (
-            <Alert className="mt-5" color="failure">
-              {error}
-            </Alert>
-          )}
         </div>
       </div>
     </div>
