@@ -14,12 +14,33 @@ import { useLocation } from "react-router-dom";
 import { RootState } from "../redux/store";
 import { toggleTheme } from "../redux/theme/themeSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { toastF } from "../helpers";
+import { signoutSuccess } from "../redux/user/userSlice";
 
 export default function Header() {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const { theme } = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch();
   const path = useLocation().pathname;
+
+  const handleSignOut = async () => {
+    try {
+      const res = await fetch("api/auth/signout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        return toastF(data.message, "error");
+      }
+      dispatch(signoutSuccess());
+      toastF("Sign out successfuly", "info");
+    } catch (error) {
+      toastF("Something went worng...", "error");
+    }
+  };
   return (
     <Navbar className="border-b-2">
       <Link
@@ -61,7 +82,10 @@ export default function Header() {
               <Dropdown.Item>Profile</Dropdown.Item>
             </Link>
             <DropdownDivider />
-            <DropdownItem className="bg-red-500 hover:bg-red-700 text-white">
+            <DropdownItem
+              onClick={handleSignOut}
+              className="bg-red-500 hover:bg-red-700 text-white"
+            >
               Sign Out
             </DropdownItem>
           </Dropdown>

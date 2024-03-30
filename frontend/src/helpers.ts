@@ -4,7 +4,7 @@ export const toastF = (message: string, typeMessage: string) => {
   toast(message, {
     type: typeMessage === "success" ? "success" : typeMessage === "info" ? "info" : "error", //toast type
     position: "bottom-right",
-    autoClose: 3000,
+    autoClose: 2000,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
