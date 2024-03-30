@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface User {
+  _id: string;
   email: string;
   username: string;
   profilePicture: string;
@@ -31,10 +32,27 @@ export const userSlice = createSlice({
     signInFailure: (state) => {
       state.loading = false;
     },
+    updateStart: (state) => {
+      state.loading = true;
+    },
+    updateSuccess: (state, action: PayloadAction<object>) => {
+      state.currentUser = action.payload as User;
+      state.loading = false;
+    },
+    updateFailure: (state) => {
+      state.loading = false;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { signInStart, signInSuccess, signInFailure } = userSlice.actions;
+export const {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+  updateFailure,
+  updateStart,
+  updateSuccess,
+} = userSlice.actions;
 
 export default userSlice.reducer;
