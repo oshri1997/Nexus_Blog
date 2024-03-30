@@ -5,6 +5,7 @@ interface ThemeProviderProps {
   children: React.ReactNode;
 }
 
+// ThemeProvider component to provide theme to the app based on the theme state from redux
 export default function ThemeProvider({ children }: ThemeProviderProps) {
   const { theme } = useSelector((state: RootState) => state.theme);
   return (

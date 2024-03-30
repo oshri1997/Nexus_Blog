@@ -5,9 +5,12 @@ import { app } from "../firebase";
 import { signInSuccess } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
+import { toastF } from "../helpers";
 export default function OAuth() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  //handleGoogleClick function to handle google sign in
   const handleGoogleClick = async () => {
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
@@ -28,12 +31,12 @@ export default function OAuth() {
       });
       const data = await response.json();
       if (response.ok) {
-        console.log("its ok");
+        toastF("Signed in successfully!", "success");
         dispatch(signInSuccess(data));
         navigate("/");
       }
     } catch (error) {
-      console.log(error);
+      toastF("Something went wrong. Please try again.", "error");
     }
   };
   return (
