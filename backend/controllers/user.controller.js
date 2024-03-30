@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import { hashedPassword } from "../utils.js";
-
+// Update user in databaseoo
 export const updateUserController = async (req, res, next) => {
   if (req.user.id !== req.params.userid) {
     return next({ message: "You are not allowed to update this user", statusCode: 403 });
@@ -49,6 +49,19 @@ export const updateUserController = async (req, res, next) => {
     const userClone = { ...updatedUser._doc };
     delete userClone.password; // remove password from user object
     res.status(200).json(userClone);
+  } catch (error) {
+    next(error);
+  }
+};
+
+//delete user from database
+export const deleteUserController = async (req, res, next) => {
+  if (req.user.id !== req.params.userid) {
+    return next({ message: "You are not allowed to delete this user", statusCode: 403 });
+  }
+  try {
+    await User.findByIdAndDelete(req.params.userid);
+    res.status(200).json({ message: "User deleted" });
   } catch (error) {
     next(error);
   }
