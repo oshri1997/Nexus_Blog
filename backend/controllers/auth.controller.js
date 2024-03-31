@@ -37,7 +37,10 @@ export const signInController = async (req, res, next) => {
     }
     const userClone = { ...userExists._doc };
     delete userClone.password; // remove password from user object
-    const token = jwt.sign({ id: userExists._id }, process.env.JWT_SECRET);
+    const token = jwt.sign(
+      { id: userExists._id, isAdmin: userExists.isAdmin },
+      process.env.JWT_SECRET
+    );
     res
       .status(200)
       .cookie("access_token", token, {
@@ -70,7 +73,7 @@ export const googleSignInController = async (req, res, next) => {
         profilePicture: googlePhotoUrl,
       });
       await user.save();
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET);
       const userClone = { ...user._doc };
       delete userClone.password;
       res.status(200).cookie("access_token", token, { httpOnly: true }).json(userClone);
