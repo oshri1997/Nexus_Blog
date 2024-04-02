@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { Button, Modal, TextInput } from "flowbite-react";
+import { Button, Modal, TextInput, Spinner } from "flowbite-react";
 import { useState, useRef, useEffect } from "react";
 import React from "react";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,7 +18,7 @@ import {
 } from "../redux/user/userSlice";
 import { toastF } from "../helpers";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface FormData {
   username?: string;
@@ -28,7 +28,7 @@ interface FormData {
 }
 
 export default function DashProfile() {
-  const { currentUser } = useSelector((state: RootState) => state.user);
+  const { currentUser, loading } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imageFileUrl, setImageFileUrl] = useState<string | null>(null);
@@ -196,9 +196,29 @@ export default function DashProfile() {
           onChange={handleChange}
         />
 
-        <Button gradientDuoTone="purpleToBlue" outline type="submit">
-          Update
+        <Button
+          disabled={loading || imageFileUploading}
+          gradientDuoTone="purpleToBlue"
+          outline
+          type="submit"
+        >
+          {loading ? (
+            <>
+              <span>loading...</span>
+              <Spinner className="mr-2" />
+            </>
+          ) : (
+            "Update"
+          )}
         </Button>
+
+        {currentUser?.isAdmin && (
+          <Link to="/create-post">
+            <Button className="w-full" gradientDuoTone="purpleToBlue" type="button">
+              Create a post
+            </Button>
+          </Link>
+        )}
         {/* {updateUserSuccess && <Alert color="success">Profile updated successfully.</Alert>} */}
       </form>
       <div className="text-red-500 mt-5">
