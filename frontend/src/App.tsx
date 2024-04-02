@@ -8,9 +8,11 @@ import Projects from "./pages/Projects";
 import Header from "./components/Header";
 import FooterComponent from "./components/Footer";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRouteAdmin from "./components/ProtectedRouteAdmin";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
+import CreatePost from "./pages/CreatePost";
 
 const App = () => {
   const { theme } = useSelector((state: RootState) => state.theme);
@@ -26,6 +28,9 @@ const App = () => {
         </Route>
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route element={<ProtectedRouteAdmin />}>
+          <Route path="/create-post" element={<CreatePost />} />
+        </Route>
 
         <Route path="/projects" element={<Projects />} />
         <Route path="*" element={<h1>Not Found</h1>} />

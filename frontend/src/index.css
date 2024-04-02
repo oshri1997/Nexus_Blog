@@ -1,3 +1,18 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  height: 100vh;
+}
+.ql-editor {
+  font-size: 1.05rem;
+  height: 100%;
+  overflow-y: auto;
+}
+.ql-editor.ql-blank::before {
+  font-size: 1.05rem;
+  font-style: italic;
+  color: #848a91;
+  content: attr(data-placeholder);
+}
