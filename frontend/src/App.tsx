@@ -19,7 +19,7 @@ const App = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
   return (
     <BrowserRouter>
-      <ToastContainer theme={theme} />
+      <ToastContainer pauseOnFocusLoss={false} theme={theme} />
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
