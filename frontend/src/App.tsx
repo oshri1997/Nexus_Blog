@@ -7,7 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Projects from "./pages/Projects";
 import Header from "./components/Header";
 import FooterComponent from "./components/Footer";
-import ProtectedRoute from "./components/ProtectedRoute";
+import { ProtectedRouteGuest, ProtectedRouteUser } from "./components/ProtectedRoute";
 import ProtectedRouteAdmin from "./components/ProtectedRouteAdmin";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
@@ -16,6 +16,7 @@ import CreatePost from "./pages/CreatePost";
 
 const App = () => {
   const { theme } = useSelector((state: RootState) => state.theme);
+  const { currentUser } = useSelector((state: RootState) => state.user);
   return (
     <BrowserRouter>
       <ToastContainer theme={theme} />
@@ -23,11 +24,15 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
-        <Route element={<ProtectedRoute />}>
+        <Route element={<ProtectedRouteGuest currentUser={currentUser} />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
+        <Route element={<ProtectedRouteUser currentUser={currentUser} />}>
+          <Route path="/sign-in" element={<SignIn />} />
+        </Route>
+        <Route element={<ProtectedRouteUser currentUser={currentUser} />}>
+          <Route path="/sign-up" element={<SignUp />} />
+        </Route>
         <Route element={<ProtectedRouteAdmin />}>
           <Route path="/create-post" element={<CreatePost />} />
         </Route>

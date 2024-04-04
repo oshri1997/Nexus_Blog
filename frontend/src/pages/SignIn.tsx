@@ -16,12 +16,11 @@ export default function SignIn() {
   const [formData, setFormData] = useState<User>({ email: "", password: "" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { currentUser } = useSelector((state: RootState) => state.user);
   const loading = useSelector((state: RootState) => state.user.loading);
 
-  if (currentUser) {
-    return <Navigate to="/" />;
-  }
+  // if (currentUser) {
+  //   return <Navigate to="/" />;
+  // }
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
     setFormData({ ...formData, [id]: value.trim() });

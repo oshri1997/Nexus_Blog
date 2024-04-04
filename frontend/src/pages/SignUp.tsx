@@ -1,9 +1,7 @@
 import { Alert, Button, Label, TextInput, Spinner } from "flowbite-react";
 import { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
-import { RootState } from "../redux/store";
-import { useSelector } from "react-redux";
 
 interface User {
   username: string;
@@ -16,11 +14,6 @@ export default function SignUp() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
-  const { currentUser } = useSelector((state: RootState) => state.user);
-
-  if (currentUser) {
-    return <Navigate to="/" />;
-  }
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
