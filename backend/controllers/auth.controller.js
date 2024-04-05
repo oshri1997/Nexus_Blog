@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
-import { comparePassword, hashedPassword } from "../utils.js";
+import { comparePassword, hashedPassword, renewToken } from "../utils.js";
+
 export const signUpController = async (req, res, next) => {
   const { username, email, password } = req.body;
   if (!username || !email || !password || username == "" || email == "" || password == "") {
@@ -37,16 +38,26 @@ export const signInController = async (req, res, next) => {
     }
     const userClone = { ...userExists._doc };
     delete userClone.password; // remove password from user object
-    const token = jwt.sign(
+    const accessToken = jwt.sign(
       { id: userExists._id, isAdmin: userExists.isAdmin },
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
     );
-    res
-      .status(200)
-      .cookie("access_token", token, {
-        httpOnly: true,
-      })
-      .json(userClone);
+    const refreshToken = jwt.sign(
+      { id: userExists._id, isAdmin: userExists.isAdmin },
+      process.env.JWT_SECRET,
+      { expiresIn: "8d" }
+    );
+    res.cookie("access_token", accessToken, {
+      httpOnly: true,
+      maxAge: 604800000, // 7 days in milliseconds
+    });
+
+    res.cookie("refresh_token", refreshToken, {
+      httpOnly: true,
+      maxAge: 691200000, // 8 days in milliseconds
+    });
+    res.status(200).json(userClone);
   } catch (error) {
     next(error);
   }
@@ -73,10 +84,28 @@ export const googleSignInController = async (req, res, next) => {
         profilePicture: googlePhotoUrl,
       });
       await user.save();
-      const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET);
       const userClone = { ...user._doc };
       delete userClone.password;
-      res.status(200).cookie("access_token", token, { httpOnly: true }).json(userClone);
+      const accessToken = jwt.sign(
+        { id: userExists._id, isAdmin: userExists.isAdmin },
+        process.env.JWT_SECRET,
+        { expiresIn: "7d" }
+      );
+      const refreshToken = jwt.sign(
+        { id: userExists._id, isAdmin: userExists.isAdmin },
+        process.env.JWT_SECRET,
+        { expiresIn: "8d" }
+      );
+      res.cookie("access_token", accessToken, {
+        httpOnly: true,
+        maxAge: 604800000, // 7 days in milliseconds
+      });
+
+      res.cookie("refresh_token", refreshToken, {
+        httpOnly: true,
+        maxAge: 691200000, // 8 days in milliseconds
+      });
+      res.status(200).json(userClone);
     }
   } catch (error) {
     next(error);
@@ -84,8 +113,24 @@ export const googleSignInController = async (req, res, next) => {
 };
 export const signOutController = async (req, res, next) => {
   try {
-    res.clearCookie("access_token").status(200).json({ message: "Sign out successful" });
+    res.clearCookie("access_token");
+    res.clearCookie("refresh_token").status(200).json({ message: "Sign out successful" });
   } catch (error) {
     next(error);
+  }
+};
+
+export const refreshTokenController = async (req, res, next) => {
+  const accesstoken = req.cookies.access_token;
+  if (!accesstoken) {
+    return renewToken(req, res, next);
+  } else {
+    jwt.verify(accesstoken, process.env.JWT_SECRET, (err, user) => {
+      if (err) {
+        return next({ message: "Invalid token", statusCode: 400 });
+      } else {
+        req.user = user;
+      }
+    });
   }
 };

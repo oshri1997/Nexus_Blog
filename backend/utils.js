@@ -37,3 +37,36 @@ export const verifyToken = (req, res, next) => {
     next();
   });
 };
+//refresh token
+export const renewToken = (req, res, next) => {
+  const refreshtoken = req.cookies.refresh_token;
+  if (!refreshtoken) {
+    return next({ message: "Please sign in", statusCode: 400 });
+  } else {
+    jwt.verify(refreshtoken, process.env.JWT_SECRET, (err, user) => {
+      if (err) {
+        return res.next({ message: "Invalid token", statusCode: 400 });
+      } else {
+        const accessToken = jwt.sign(
+          { id: user._id, isAdmin: user.isAdmin },
+          process.env.JWT_SECRET,
+          { expiresIn: "1m" }
+        );
+        res.cookie("access_token", accessToken, {
+          httpOnly: true,
+          maxAge: 60000,
+        });
+        const refreshToken = jwt.sign(
+          { id: user._id, isAdmin: user.isAdmin },
+          process.env.JWT_SECRET,
+          { expiresIn: "5m" }
+        );
+        res.cookie("refresh_token", refreshToken, {
+          httpOnly: true,
+          maxAge: 300000,
+        });
+      }
+      res.json({ valid: true, message: "Token renewed" });
+    });
+  }
+};
