@@ -71,10 +71,28 @@ export const googleSignInController = async (req, res, next) => {
   try {
     const userExists = await User.findOne({ email });
     if (userExists) {
-      const token = jwt.sign({ id: userExists._id }, process.env.JWT_SECRET);
       const userClone = { ...userExists._doc };
       delete userClone.password;
-      res.status(200).cookie("access_token", token, { httpOnly: true }).json(userClone);
+      const accessToken = jwt.sign(
+        { id: userExists._id, isAdmin: userExists.isAdmin },
+        process.env.JWT_SECRET,
+        { expiresIn: "7d" }
+      );
+      const refreshToken = jwt.sign(
+        { id: userExists._id, isAdmin: userExists.isAdmin },
+        process.env.JWT_SECRET,
+        { expiresIn: "8d" }
+      );
+      res.cookie("access_token", accessToken, {
+        httpOnly: true,
+        maxAge: 604800000, // 7 days in milliseconds
+      });
+
+      res.cookie("refresh_token", refreshToken, {
+        httpOnly: true,
+        maxAge: 691200000, // 8 days in milliseconds
+      });
+      res.status(200).json(userClone);
     } else {
       const generetedPassword = hashedPassword(email);
       const user = new User({
