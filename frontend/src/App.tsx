@@ -8,7 +8,6 @@ import Projects from "./pages/Projects";
 import Header from "./components/Header";
 import FooterComponent from "./components/Footer";
 import { ProtectedRouteGuest, ProtectedRouteUser } from "./components/ProtectedRoute";
-import ProtectedRouteAdmin from "./components/ProtectedRouteAdmin";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
@@ -27,17 +26,16 @@ const App = () => {
         <Route element={<ProtectedRouteGuest currentUser={currentUser} />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
+        <Route element={<ProtectedRouteGuest currentUser={currentUser} />}>
+          <Route path="/create-post" element={<CreatePost />} />
+        </Route>
+        <Route path="/projects" element={<Projects />} />
         <Route element={<ProtectedRouteUser currentUser={currentUser} />}>
           <Route path="/sign-in" element={<SignIn />} />
         </Route>
         <Route element={<ProtectedRouteUser currentUser={currentUser} />}>
           <Route path="/sign-up" element={<SignUp />} />
         </Route>
-        <Route element={<ProtectedRouteAdmin />}>
-          <Route path="/create-post" element={<CreatePost />} />
-        </Route>
-
-        <Route path="/projects" element={<Projects />} />
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
       <FooterComponent />

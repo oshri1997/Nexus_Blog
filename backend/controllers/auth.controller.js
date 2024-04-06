@@ -148,6 +148,7 @@ export const refreshTokenController = async (req, res, next) => {
         return next({ message: "Invalid token", statusCode: 400 });
       } else {
         req.user = user;
+        res.json({ user });
       }
     });
   }
