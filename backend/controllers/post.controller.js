@@ -54,3 +54,37 @@ export const getPostsController = async (req, res, next) => {
     next({ status: 400, message: error });
   }
 };
+
+export const deletePostController = async (req, res, next) => {
+  if (!req.user.isAdmin || req.user.id !== req.params.userid) {
+    return next({ status: 401, message: "You are not authorized to delete this post" });
+  }
+  try {
+    await Post.findByIdAndDelete(req.params.postid);
+    res.status(200).json({ message: "Post deleted successfully" });
+  } catch (error) {
+    next({ status: 400, message: error });
+  }
+};
+export const updatePostController = async (req, res, next) => {
+  if (!req.user.isAdmin || req.user.id !== req.params.userid) {
+    return next({ status: 401, message: "You are not authorized to update this post" });
+  }
+  try {
+    const updatedPost = await Post.findByIdAndUpdate(
+      req.params.postid,
+      {
+        $set: {
+          title: req.body.title,
+          category: req.body.category,
+          content: req.body.content,
+          image: req.body.image,
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    next({ status: 400, message: error });
+  }
+};

@@ -50,7 +50,7 @@ export default function SignIn() {
         navigate("/");
       }
     } catch (error) {
-      signInFailure();
+      dispatch(signInFailure());
       toastF("Something went wrong. Please try again.", "error");
     }
   };
