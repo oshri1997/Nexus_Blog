@@ -12,6 +12,7 @@ import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import CreatePost from "./pages/CreatePost";
+import UpdatePost from "./pages/UpdatePost";
 
 const App = () => {
   const { theme } = useSelector((state: RootState) => state.theme);
@@ -28,6 +29,9 @@ const App = () => {
         </Route>
         <Route element={<ProtectedRouteGuest currentUser={currentUser} />}>
           <Route path="/create-post" element={<CreatePost />} />
+        </Route>
+        <Route element={<ProtectedRouteGuest currentUser={currentUser} />}>
+          <Route path="/update-post/:postid" element={<UpdatePost />} />
         </Route>
         <Route path="/projects" element={<Projects />} />
         <Route element={<ProtectedRouteUser currentUser={currentUser} />}>
