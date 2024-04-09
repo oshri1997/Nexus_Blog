@@ -75,7 +75,7 @@ export default function CreatePost() {
       const data = await response.json();
       toastF("Post created successfully", "success");
       setFormData(null);
-      navigate(`/posts/${data.slug}`);
+      navigate(`/post/${data.slug}`);
     } catch (error) {
       toastF("Could not create post, please try again", "error");
     }

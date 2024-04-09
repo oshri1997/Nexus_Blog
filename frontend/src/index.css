@@ -16,3 +16,62 @@ body {
   color: #848a91;
   content: attr(data-placeholder);
 }
+.post-content p {
+  margin-bottom: 0.5rem;
+}
+.post-content h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  font-family: sans-serif;
+  margin: 1.5rem 0;
+}
+.post-content h2 {
+  font-family: sans-serif;
+  margin: 1.5rem 0;
+}
+.post-content a {
+  color: rgb(73, 149, 199);
+  text-decoration: underline;
+}
+.post-content a:hover {
+  text-decoration: underline;
+}
+.dark .post-content a {
+  color: rgb(2, 149, 255);
+}
+.post-content code {
+  font-family: monospace;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.25rem;
+  border-radius: 3px;
+}
+.post-content pre {
+  font-family: monospace;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 0.5rem;
+  border-radius: 3px;
+  overflow-x: auto;
+}
+.post-content blockquote {
+  border-left: 4px solid rgba(0, 0, 0, 0.1);
+  padding-left: 1rem;
+  margin: 1rem 0;
+}
+.post-content img {
+  max-width: 100%;
+  height: auto;
+  margin: 1rem 0;
+}
+.post-content ul {
+  margin-bottom: 1rem;
+}
+.post-content ul li {
+  margin-bottom: 0.5rem;
+}
+.post-content ol {
+  margin-bottom: 1rem;
+}
+.post-content ol li {
+  margin-bottom: 0.5rem;
+}
+/* dark mode */

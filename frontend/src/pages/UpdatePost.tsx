@@ -98,7 +98,7 @@ export default function UpdatePost() {
 
       toastF("Post updated successfully", "success");
       setFormData(null);
-      navigate(`/posts/${data.slug}`);
+      navigate(`/post/${data.slug}`);
     } catch (error) {
       toastF("Could not update this post, please try again", "error");
     }

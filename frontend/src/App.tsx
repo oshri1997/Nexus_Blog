@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import CreatePost from "./pages/CreatePost";
 import UpdatePost from "./pages/UpdatePost";
+import PostPage from "./pages/PostPage";
 
 const App = () => {
   const { theme } = useSelector((state: RootState) => state.theme);
@@ -24,6 +25,8 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/post/:slug" element={<PostPage />} />
+
         <Route element={<ProtectedRouteGuest currentUser={currentUser} />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
