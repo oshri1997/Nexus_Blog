@@ -56,12 +56,36 @@ export const updateUserController = async (req, res, next) => {
 
 //delete user from database
 export const deleteUserController = async (req, res, next) => {
-  if (req.user.id !== req.params.userid) {
+  if (!req.user.isAdmin && req.user.id !== req.params.userid) {
     return next({ message: "You are not allowed to delete this user", statusCode: 403 });
   }
   try {
     await User.findByIdAndDelete(req.params.userid);
     res.status(200).json({ message: "User deleted" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUserController = async (req, res, next) => {
+  if (!req.user.isAdmin)
+    return next({ message: "You are not allowed to get all users", statusCode: 403 });
+  try {
+    const startIndex = parseInt(req.query.startindex) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const sortDirection = req.query.sort === "asc" ? 1 : -1;
+    const users = await User.find()
+      .sort({
+        createdAt: sortDirection,
+      })
+      .skip(startIndex)
+      .limit(limit)
+      .select("-password");
+    const totalUsers = await User.countDocuments();
+    const now = new Date();
+    const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+    const lastMonthUsers = await User.countDocuments({ createdAt: { $gte: oneMonthAgo } });
+    res.status(200).json({ users, totalUsers, lastMonthUsers });
   } catch (error) {
     next(error);
   }
