@@ -3,10 +3,11 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface User {
   _id: string;
-  email: string;
   username: string;
-  profilePicture: string;
+  email: string;
   isAdmin: boolean;
+  profilePicture: string;
+  createdAt: Date;
 }
 
 interface authState {
