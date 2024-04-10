@@ -14,12 +14,14 @@ import { RootState } from "./redux/store";
 import CreatePost from "./pages/CreatePost";
 import UpdatePost from "./pages/UpdatePost";
 import PostPage from "./pages/PostPage";
+import ScrollToTop from "./components/ScrollToTop";
 
 const App = () => {
   const { theme } = useSelector((state: RootState) => state.theme);
   const { currentUser } = useSelector((state: RootState) => state.user);
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <ToastContainer pauseOnFocusLoss={false} theme={theme} />
       <Header />
       <Routes>

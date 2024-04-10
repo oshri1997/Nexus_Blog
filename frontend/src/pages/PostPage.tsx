@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { toastF } from "../helpers";
 import { Button } from "flowbite-react";
+import Comments from "../components/Comments";
 
 interface Post {
   _id: string;
@@ -112,6 +113,7 @@ export default function PostPage() {
         className="p-3 max-w-4xl mx-auto w-full post-content"
         dangerouslySetInnerHTML={{ __html: post?.content! }}
       ></div>
+      <Comments postId={post?._id!} />
     </main>
   );
 }

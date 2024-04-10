@@ -67,7 +67,7 @@ export const deleteUserController = async (req, res, next) => {
   }
 };
 
-export const getUserController = async (req, res, next) => {
+export const getUsersController = async (req, res, next) => {
   if (!req.user.isAdmin)
     return next({ message: "You are not allowed to get all users", statusCode: 403 });
   try {
@@ -88,5 +88,15 @@ export const getUserController = async (req, res, next) => {
     res.status(200).json({ users, totalUsers, lastMonthUsers });
   } catch (error) {
     next(error);
+  }
+};
+
+export const getUserController = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.userid).select("-password");
+    if (!user) return next({ message: "User not found", statusCode: 404 });
+    res.status(200).json(user);
+  } catch (error) {
+    next({ message: "User not found", statusCode: 404 });
   }
 };
