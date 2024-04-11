@@ -4,11 +4,13 @@ import { toastF } from "../helpers";
 import { Button } from "flowbite-react";
 import Comments from "../components/Comments";
 import { IPost } from "../types";
+import PostCard from "../components/PostCard";
 
 export default function PostPage() {
   const { slug } = useParams();
   const [post, setPost] = useState<IPost | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [recentPosts, setRecentPosts] = useState<IPost[] | null>(null);
   useEffect(() => {
     const fetchPost = async () => {
       try {
@@ -30,6 +32,22 @@ export default function PostPage() {
     };
     fetchPost();
   }, [slug]);
+
+  useEffect(() => {
+    const fetchRecentPosts = async () => {
+      try {
+        const res = await fetch("/api/post/getposts?limit=3");
+        const data = await res.json();
+        if (res.ok) {
+          setRecentPosts(data.posts);
+        }
+      } catch (error) {
+        toastF("Error while fetching recent posts", "error");
+      }
+    };
+    fetchRecentPosts();
+  }, []);
+
   if (loading) {
     return (
       <div
@@ -104,6 +122,13 @@ export default function PostPage() {
         dangerouslySetInnerHTML={{ __html: post?.content! }}
       ></div>
       <Comments postId={post?._id!} />
+      <div className="flex flex-col justify-center items-center mb-5">
+        <h1 className="text-xl mt-5">Recent Articles</h1>
+        <div className="flex justify-center w-full mt-5  items-center mx-auto flex-col md:flex-row  gap-5">
+          {recentPosts &&
+            recentPosts?.map((post) => <PostCard key={post._id} post={post}></PostCard>)}
+        </div>
+      </div>
     </main>
   );
 }
