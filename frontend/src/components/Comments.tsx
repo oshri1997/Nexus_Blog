@@ -5,23 +5,15 @@ import { Button, Textarea } from "flowbite-react";
 import { useEffect, useState } from "react";
 import { toastF } from "../helpers";
 import Comment from "./Comment";
+import { IComment } from "../types";
 
 interface CommentsProps {
   postId: string;
 }
-interface Comment {
-  _id: string;
-  content: string;
-  userId: string;
-  postId: string;
-  likes: string[];
-  createdAt: Date;
-}
-
 export default function Comments({ postId }: CommentsProps) {
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [comment, setComment] = useState<string>("");
-  const [comments, setComments] = useState<Comment[]>([]);
+  const [comments, setComments] = useState<IComment[]>([]);
   const navigate = useNavigate();
   useEffect(() => {
     const fetchComments = async () => {
@@ -90,7 +82,7 @@ export default function Comments({ postId }: CommentsProps) {
       toastF("An error occurred", "error");
     }
   };
-  const handleEdit = async (comment: Comment, editedComment: string) => {
+  const handleEdit = async (comment: IComment, editedComment: string) => {
     setComments(
       comments.map((c) => (c._id === comment._id ? { ...c, content: editedComment } : c))
     );

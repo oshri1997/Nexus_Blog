@@ -5,22 +5,14 @@ import { Button, Modal, Table } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { toastF } from "../helpers";
-
+import { IPost } from "../types";
 /**
  * Represents a blog post.
  */
-interface Post {
-  _id: string;
-  title: string;
-  category: string;
-  image: string;
-  slug: string;
-  updatedAt: Date;
-}
 
 export default function DashPosts() {
   const { currentUser } = useSelector((state: RootState) => state.user);
-  const [userPosts, setUserPosts] = useState<Post[]>([]);
+  const [userPosts, setUserPosts] = useState<IPost[]>([]);
   const [showMore, setShowMore] = useState<boolean>(true);
   const [postIdToDelete, setPostIdToDelete] = useState<string>("");
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -52,7 +44,7 @@ export default function DashPosts() {
       );
       const data = await res.json();
       if (res.ok) {
-        setUserPosts((prevPosts: Post[]) => [...prevPosts, ...data.posts]);
+        setUserPosts((prevPosts: IPost[]) => [...prevPosts, ...data.posts]);
         if (data.posts.length < 9) {
           setShowMore(false);
         }
@@ -71,7 +63,7 @@ export default function DashPosts() {
         },
       });
       if (res.ok) {
-        setUserPosts((prevPosts: Post[]) =>
+        setUserPosts((prevPosts: IPost[]) =>
           prevPosts.filter((post) => post._id !== postIdToDelete)
         );
       }
@@ -95,7 +87,7 @@ export default function DashPosts() {
               </Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y-2">
-              {userPosts.map((post: Post) => (
+              {userPosts.map((post: IPost) => (
                 <Table.Row key={post._id}>
                   <Table.Cell className="text-slate-800  dark:text-slate-400 font-medium">
                     {new Date(post.updatedAt).toLocaleDateString()}

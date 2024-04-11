@@ -3,30 +3,13 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import { FaThumbsUp } from "react-icons/fa";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-
-interface Comment {
-  _id: string;
-  content: string;
-  userId: string;
-  postId: string;
-  likes: string[];
-  createdAt: Date;
-}
-
-interface User {
-  _id: string;
-  username: string;
-  email: string;
-  isAdmin: boolean;
-  profilePicture: string;
-  createdAt: Date;
-}
+import { IComment, ILoggedInUser } from "../types";
 
 interface commentProps {
-  comment: Comment;
-  currentUser: User;
+  comment: IComment;
+  currentUser: ILoggedInUser;
   onLike: (commentId: string) => void;
-  onEdit: (comment: Comment, content: string) => void;
+  onEdit: (comment: IComment, content: string) => void;
   onDelete: (commentId: string) => void;
 }
 
@@ -37,7 +20,7 @@ export default function Comment({
   onEdit,
   onDelete,
 }: commentProps) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<ILoggedInUser | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedComment, setEditedComment] = useState(comment.content);
   const [showModal, setShowModal] = useState<boolean>(false);

@@ -19,13 +19,7 @@ import {
 import { toastF } from "../helpers";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
-
-interface FormData {
-  username?: string;
-  email?: string;
-  password?: string;
-  profilePicture?: string;
-}
+import { IFormUser } from "../types";
 
 export default function DashProfile() {
   const { currentUser, loading } = useSelector((state: RootState) => state.user);
@@ -35,7 +29,7 @@ export default function DashProfile() {
   const fileRef = useRef<HTMLInputElement>(null);
   const [imageFileProgress, setImageFileProgress] = useState<number>(0);
   const [imageFileUploading, setImageFileUploading] = useState<boolean>(false); //
-  const [formData, setFormData] = useState<FormData | null>(null);
+  const [formData, setFormData] = useState<IFormUser | null>(null);
   const [showModal, setShowModal] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -70,7 +64,7 @@ export default function DashProfile() {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setImageFileUrl(downloadURL);
-          setFormData({ ...formData, profilePicture: downloadURL });
+          setFormData({ ...formData!, profilePicture: downloadURL });
           setImageFileUploading(false);
         });
       }
@@ -84,7 +78,7 @@ export default function DashProfile() {
   }, [imageFile]);
   //handleChange function to handle change in form
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [event.target.id]: event.target.value });
+    setFormData({ ...formData!, [event.target.id]: event.target.value });
   };
   //handleSubmit function to handle submit in form
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

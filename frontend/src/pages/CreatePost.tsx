@@ -9,17 +9,12 @@ import { toastF } from "../helpers";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { useNavigate } from "react-router-dom";
-interface FormData {
-  title: string;
-  content: string;
-  category?: string;
-  image?: string;
-}
+import { IFormPost } from "../types";
 
 export default function CreatePost() {
   const [file, setFile] = useState<File | null>(null);
   const [imageFileProgress, setImageFileProgress] = useState<number>(0);
-  const [formData, setFormData] = useState<FormData | null>(null);
+  const [formData, setFormData] = useState<IFormPost | null>(null);
   const navigate = useNavigate();
   const hanleUploadImage = async () => {
     try {

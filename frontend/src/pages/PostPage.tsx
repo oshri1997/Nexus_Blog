@@ -3,21 +3,11 @@ import { Link, useParams } from "react-router-dom";
 import { toastF } from "../helpers";
 import { Button } from "flowbite-react";
 import Comments from "../components/Comments";
-
-interface Post {
-  _id: string;
-  title: string;
-  category: string;
-  content: string;
-  image: string;
-  slug: string;
-  updatedAt: Date;
-  createdAt: Date;
-}
+import { IPost } from "../types";
 
 export default function PostPage() {
   const { slug } = useParams();
-  const [post, setPost] = useState<Post | null>(null);
+  const [post, setPost] = useState<IPost | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     const fetchPost = async () => {

@@ -2,15 +2,14 @@ import { Alert, Button, Label, TextInput, Spinner } from "flowbite-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
-
-interface User {
-  username: string;
-  email: string;
-  password: string;
-}
+import { IGuestUser } from "../types";
 
 export default function SignUp() {
-  const [formData, setFormData] = useState<User>({ username: "", email: "", password: "" });
+  const [formData, setFormData] = useState<IGuestUser>({
+    username: "",
+    email: "",
+    password: "",
+  });
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();

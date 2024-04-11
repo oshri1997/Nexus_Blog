@@ -1,17 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-
-interface User {
-  _id: string;
-  username: string;
-  email: string;
-  isAdmin: boolean;
-  profilePicture: string;
-  createdAt: Date;
-}
+import { ILoggedInUser } from "../../types";
 
 interface authState {
-  currentUser: User | null;
+  currentUser: ILoggedInUser | null;
   loading: boolean;
 }
 
@@ -28,7 +20,7 @@ export const userSlice = createSlice({
       state.loading = true;
     },
     signInSuccess: (state, action: PayloadAction<object>) => {
-      state.currentUser = action.payload as User;
+      state.currentUser = action.payload as ILoggedInUser;
       state.loading = false;
     },
     signInFailure: (state) => {
@@ -38,7 +30,7 @@ export const userSlice = createSlice({
       state.loading = true;
     },
     updateSuccess: (state, action: PayloadAction<object>) => {
-      state.currentUser = action.payload as User;
+      state.currentUser = action.payload as ILoggedInUser;
       state.loading = false;
     },
     updateFailure: (state) => {
