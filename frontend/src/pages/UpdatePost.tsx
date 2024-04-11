@@ -11,17 +11,12 @@ import "react-circular-progressbar/dist/styles.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-interface FormData {
-  title: string;
-  content: string;
-  category?: string;
-  image?: string;
-}
+import { IFormPost } from "../types";
 
 export default function UpdatePost() {
   const [file, setFile] = useState<File | null>(null);
   const [imageFileProgress, setImageFileProgress] = useState<number>(0);
-  const [formData, setFormData] = useState<FormData | null>(null);
+  const [formData, setFormData] = useState<IFormPost | null>(null);
   const { currentUser } = useSelector((state: RootState) => state.user);
 
   const { postid } = useParams();

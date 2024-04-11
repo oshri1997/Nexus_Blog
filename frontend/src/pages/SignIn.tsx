@@ -6,14 +6,10 @@ import { signInFailure, signInStart, signInSuccess } from "../redux/user/userSli
 import { RootState } from "../redux/store";
 import OAuth from "../components/OAuth";
 import { toastF } from "../helpers";
-
-interface User {
-  email: string;
-  password: string;
-}
+import { IGuestUser } from "../types";
 
 export default function SignIn() {
-  const [formData, setFormData] = useState<User>({ email: "", password: "" });
+  const [formData, setFormData] = useState<IGuestUser>({ email: "", password: "" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loading = useSelector((state: RootState) => state.user.loading);

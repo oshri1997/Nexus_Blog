@@ -2,25 +2,17 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { Button, Modal, Table } from "flowbite-react";
-
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { toastF } from "../helpers";
+import { ILoggedInUser } from "../types";
 
 /**
  * Represents a user.
  */
-interface User {
-  _id: string;
-  username: string;
-  email: string;
-  isAdmin: boolean;
-  profilePicture: string;
-  createdAt: Date;
-}
 
 export default function DashUsers() {
   const { currentUser } = useSelector((state: RootState) => state.user);
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<ILoggedInUser[]>([]);
   const [showMore, setShowMore] = useState<boolean>(true);
   const [userIdToDelete, setUserIdToDelete] = useState<string>("");
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -50,7 +42,7 @@ export default function DashUsers() {
       const res = await fetch(`/api/user/getusers&start=${startIndex}`);
       const data = await res.json();
       if (res.ok) {
-        setUsers((prevUsers: User[]) => [...prevUsers, ...data.users]);
+        setUsers((prevUsers: ILoggedInUser[]) => [...prevUsers, ...data.users]);
         if (data.users.length < 9) {
           setShowMore(false);
         }
@@ -69,7 +61,7 @@ export default function DashUsers() {
         },
       });
       if (res.ok) {
-        setUsers((prevUsers: User[]) =>
+        setUsers((prevUsers: ILoggedInUser[]) =>
           prevUsers.filter((user) => user._id !== userIdToDelete)
         );
       }
@@ -91,7 +83,7 @@ export default function DashUsers() {
               <Table.HeadCell>Delete</Table.HeadCell>
             </Table.Head>
             <Table.Body className="divide-y-2">
-              {users.map((user: User) => (
+              {users.map((user: ILoggedInUser) => (
                 <Table.Row key={user._id}>
                   <Table.Cell className="text-slate-800  dark:text-slate-400 font-medium">
                     {new Date(user.createdAt).toLocaleDateString()}
