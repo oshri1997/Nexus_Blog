@@ -7,6 +7,7 @@ import { signoutSuccess } from "../redux/user/userSlice";
 import { toastF } from "../helpers";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import { BiSolidCommentDetail } from "react-icons/bi";
 
 export default function DashSidebar() {
   const location = useLocation();
@@ -57,14 +58,34 @@ export default function DashSidebar() {
           </Link>
           {currentUser?.isAdmin && (
             <>
+              <Link to="/dashboard?tab=users">
+                <Sidebar.Item
+                  active={tab === "users"}
+                  icon={HiUserGroup}
+                  labelColor="dark"
+                  as="div"
+                >
+                  Users
+                </Sidebar.Item>
+              </Link>
               <Link to="/dashboard?tab=posts">
-                <Sidebar.Item icon={HiDocumentText} labelColor="dark" as="div">
+                <Sidebar.Item
+                  active={tab === "posts"}
+                  icon={HiDocumentText}
+                  labelColor="dark"
+                  as="div"
+                >
                   Posts
                 </Sidebar.Item>
               </Link>
-              <Link to="/dashboard?tab=users">
-                <Sidebar.Item icon={HiUserGroup} labelColor="dark" as="div">
-                  Users
+              <Link to="/dashboard?tab=comments">
+                <Sidebar.Item
+                  active={tab === "comments"}
+                  icon={BiSolidCommentDetail}
+                  labelColor="dark"
+                  as="div"
+                >
+                  Comments
                 </Sidebar.Item>
               </Link>
             </>

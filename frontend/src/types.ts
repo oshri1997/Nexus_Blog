@@ -42,6 +42,7 @@ interface IComment {
   postId: string;
   likes: string[];
   createdAt: Date;
+  updatedAt: Date;
 }
 
 export type { IGuestUser, ILoggedInUser, IFormUser, IFormPost, IPost, IComment };
