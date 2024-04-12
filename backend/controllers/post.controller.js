@@ -29,7 +29,7 @@ export const getPostsController = async (req, res, next) => {
   try {
     const startIndex = parseInt(req.query.start) || 0;
     const limit = parseInt(req.query.limit) || 9;
-    const sortDirection = req.query.order === "asc" ? 1 : -1; // 1 for ascending, -1 for descending
+    const sortDirection = req.query.sort === "asc" ? 1 : -1; // 1 for ascending, -1 for descending
     const posts = await Post.find({
       ...(req.query.userid && { userId: req.query.userid }),
       ...(req.query.category && { categories: req.query.category }),

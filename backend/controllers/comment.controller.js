@@ -18,7 +18,7 @@ export const createCommentController = async (req, res, next) => {
   }
 };
 
-export const getCommentsController = async (req, res, next) => {
+export const getCommentsPublicController = async (req, res, next) => {
   try {
     const postId = req.params.postId;
     const comments = await Comment.find({ postId }).sort({ createdAt: -1 });
@@ -28,6 +28,29 @@ export const getCommentsController = async (req, res, next) => {
   }
 };
 
+export const getCommentsAdminController = async (req, res, next) => {
+  if (!req.user.isAdmin) {
+    return res.status(403).json({ message: "You are not allowed to perform this action" });
+  }
+  try {
+    const startIndex = parseInt(req.query.start) || 0;
+    const limit = parseInt(req.query.limit) || 9;
+    const sortDirection = req.query.sort === "asc" ? 1 : -1; // 1 for ascending, -1 for descending
+    const comments = await Comment.find()
+      .sort({ createdAt: sortDirection })
+      .skip(startIndex)
+      .limit(limit);
+    const totalComments = await Comment.countDocuments();
+    const now = new Date();
+    const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+    const commentsInLastMonth = await Comment.countDocuments({
+      createdAt: { $gte: oneMonthAgo },
+    });
+    res.status(200).json({ comments, totalComments, commentsInLastMonth });
+  } catch (error) {
+    next({ message: error.message, status: 400 });
+  }
+};
 export const likeCommentController = async (req, res, next) => {
   try {
     const userId = req.user.id;
