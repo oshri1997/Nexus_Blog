@@ -5,6 +5,7 @@ import DashProfile from "../components/DashProfile";
 import DashPosts from "../components/DashPosts";
 import DashUsers from "../components/DashUsers";
 import DashComments from "../components/DashComments";
+import OverviewDash from "../components/OverviewDash";
 
 export default function Dashboard() {
   const [tab, setTab] = useState<string>("");
@@ -28,6 +29,7 @@ export default function Dashboard() {
       {tab === "posts" && <DashPosts />}
       {tab === "users" && <DashUsers />}
       {tab === "comments" && <DashComments />}
+      {tab === "overview" && <OverviewDash />}
     </div>
   );
 }
