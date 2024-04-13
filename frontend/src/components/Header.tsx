@@ -111,9 +111,9 @@ export default function Header() {
             About
           </Navbar.Link>
         </Link>
-        <Link to="/projects" className="cursor-pointer">
+        <Link to="/posts" className="cursor-pointer">
           <Navbar.Link active={path === "/projects"} as={"div"}>
-            Projects
+            Posts
           </Navbar.Link>
         </Link>
       </Navbar.Collapse>
