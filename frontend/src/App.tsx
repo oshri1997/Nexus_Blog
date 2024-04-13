@@ -4,7 +4,7 @@ import About from "./pages/About";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
-import Projects from "./pages/Projects";
+
 import Header from "./components/Header";
 import FooterComponent from "./components/Footer";
 import { ProtectedRouteGuest, ProtectedRouteUser } from "./components/ProtectedRoute";
@@ -15,6 +15,7 @@ import CreatePost from "./pages/CreatePost";
 import UpdatePost from "./pages/UpdatePost";
 import PostPage from "./pages/PostPage";
 import ScrollToTop from "./components/ScrollToTop";
+import Posts from "./pages/Posts";
 
 const App = () => {
   const { theme } = useSelector((state: RootState) => state.theme);
@@ -38,7 +39,7 @@ const App = () => {
         <Route element={<ProtectedRouteGuest currentUser={currentUser} />}>
           <Route path="/update-post/:postid" element={<UpdatePost />} />
         </Route>
-        <Route path="/projects" element={<Projects />} />
+        <Route path="/posts" element={<Posts />} />
         <Route element={<ProtectedRouteUser currentUser={currentUser} />}>
           <Route path="/sign-in" element={<SignIn />} />
         </Route>
