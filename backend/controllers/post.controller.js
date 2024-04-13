@@ -32,13 +32,14 @@ export const getPostsController = async (req, res, next) => {
     const sortDirection = req.query.sort === "asc" ? 1 : -1; // 1 for ascending, -1 for descending
     const posts = await Post.find({
       ...(req.query.userid && { userId: req.query.userid }),
-      ...(req.query.category && { categories: req.query.category }),
+      ...(req.query.category && { category: req.query.category }),
       ...(req.query.slug && { slug: req.query.slug }),
       ...(req.query.postid && { _id: req.query.postid }),
-      ...(req.query.search && {
+      ...(req.query.searchTerm && {
         $or: [
-          { title: { $regex: req.query.search, $options: "i" } },
-          { content: { $regex: req.query.search, $options: "i" } },
+          { title: { $regex: req.query.searchTerm, $options: "i" } },
+          { content: { $regex: req.query.searchTerm, $options: "i" } },
+          { category: { $regex: req.query.searchTerm, $options: "i" } },
         ],
       }),
     })

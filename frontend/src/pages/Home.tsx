@@ -1,5 +1,5 @@
 import { Button } from "flowbite-react";
-import { HiArrowCircleLeft, HiArrowLeft } from "react-icons/hi";
+import { HiArrowLeft } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
 export default function Home() {

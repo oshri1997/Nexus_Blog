@@ -45,4 +45,10 @@ interface IComment {
   updatedAt: Date;
 }
 
-export type { IGuestUser, ILoggedInUser, IFormUser, IFormPost, IPost, IComment };
+interface ISearchData {
+  searchTerm: string;
+  sort: "desc" | "asc";
+  category: string;
+}
+
+export type { IGuestUser, ILoggedInUser, IFormUser, IFormPost, IPost, IComment, ISearchData };
