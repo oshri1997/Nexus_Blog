@@ -19,7 +19,6 @@ export const createController = async (req, res, next) => {
       slug,
       userId: req.user.id,
     }).save();
-    console.log(post);
     res.status(201).json(post);
   } catch (error) {
     next({ status: 400, message: error });
