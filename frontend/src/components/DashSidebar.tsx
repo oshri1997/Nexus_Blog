@@ -7,7 +7,7 @@ import {
   HiUser,
   HiUserGroup,
 } from "react-icons/hi";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signoutSuccess } from "../redux/user/userSlice";
 import { toastF } from "../helpers";
@@ -20,10 +20,9 @@ export default function DashSidebar() {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state: RootState) => state.user);
   const [tab, setTab] = useState<string>("");
-
+  const [searchParams] = useSearchParams();
   useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const tabFromUrl = urlParams.get("tab");
+    const tabFromUrl = searchParams.get("tab");
     if (tabFromUrl) {
       setTab(tabFromUrl);
     }

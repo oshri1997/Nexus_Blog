@@ -16,6 +16,7 @@ import UpdatePost from "./pages/UpdatePost";
 import PostPage from "./pages/PostPage";
 import ScrollToTop from "./components/ScrollToTop";
 import Posts from "./pages/Posts";
+import Search from "./pages/Search";
 
 const App = () => {
   const { theme } = useSelector((state: RootState) => state.theme);
@@ -29,6 +30,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/post/:slug" element={<PostPage />} />
+        <Route path="/search" element={<Search />} />
 
         <Route element={<ProtectedRouteGuest currentUser={currentUser} />}>
           <Route path="/dashboard" element={<Dashboard />} />

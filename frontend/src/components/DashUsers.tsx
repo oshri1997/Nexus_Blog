@@ -32,9 +32,8 @@ export default function DashUsers() {
         console.log(error);
       }
     };
-    if (currentUser?.isAdmin) {
-      fetchUsers();
-    }
+
+    fetchUsers();
   }, [currentUser?._id]);
 
   const handleShowMore = async () => {
