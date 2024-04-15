@@ -14,7 +14,7 @@ export default function Posts() {
     setLoading(true);
     const fetchPosts = async () => {
       try {
-        const res = await fetch(`/api/post/getposts?userid=${currentUser?._id}`);
+        const res = await fetch(`/api/post/getposts`);
         const data = await res.json();
         if (res.ok) {
           setPosts(data.posts);
@@ -34,9 +34,7 @@ export default function Posts() {
   const handleShowMore = async () => {
     const startIndex = posts.length;
     try {
-      const res = await fetch(
-        `/api/post/getposts?userid=${currentUser?._id}&start=${startIndex}`
-      );
+      const res = await fetch(`/api/post/getposts?start=${startIndex}`);
       const data = await res.json();
       if (res.ok) {
         setPosts((prevPosts: IPost[]) => [...prevPosts, ...data.posts]);
