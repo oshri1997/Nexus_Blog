@@ -122,7 +122,13 @@ export default function UpdatePost() {
             <option value="vue">Vue</option>
             <option value="angular">Angular</option>
             <option value="next">Next</option>
-            <option value="javascript">Javascript</option>
+            <option value="Javascript">javascript</option>
+            <option value="typescript">Typescript</option>
+            <option value="nodejs">NodeJs</option>
+            <option value="state mangement">State Mangement</option>
+            <option value="css">CSS</option>
+            <option value="html">HTML</option>
+            <option value="testing">Testing</option>
           </Select>
         </div>
         <div className="flex gap-4 items-center justify-between border-4 border-teal-500 border-dotted p-3">

@@ -7,7 +7,7 @@ interface PostCardProps {
 
 export default function PostCard({ post }: PostCardProps) {
   return (
-    <div className="group relative w-full border border-teal-500 hover:border-2 transition-all  h-[400px] overflow-hidden rounded-lg sm:w-[430px]">
+    <div className="group  mx-auto relative w-full border border-teal-500 hover:border-2 transition-all  h-[400px] overflow-hidden rounded-lg sm:w-[430px]">
       <Link to={`/post/${post.slug}`}>
         <img
           className="h-64 w-full object-cover group-hover:h-52 transition-all duration-300 z-20"
