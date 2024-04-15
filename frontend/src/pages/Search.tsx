@@ -96,7 +96,7 @@ export default function Search() {
     }
   };
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="flex flex-col md:flex-row bg-background">
       <div className="p-7 border-b md:border-r md:min-h-screen border-x-gray-500">
         <form onSubmit={handleSubmit} className="flex flex-col gap-8">
           <div className="flex items-center gap-2">

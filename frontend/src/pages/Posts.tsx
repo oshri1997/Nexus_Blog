@@ -49,7 +49,7 @@ export default function Posts() {
     }
   };
   return (
-    <div className="max-w-[1500px] w-full mx-auto ">
+    <div className="max-w-[1500px] w-full mx-auto !bg-background  ">
       <div className="grid justify-center w-full  lg:grid-cols-2 xl:grid-cols-3 gap-4 p-7">
         {loading && (
           <>
