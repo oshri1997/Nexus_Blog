@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import { IPost } from "../types";
-import { RootState } from "../redux/store";
-import { useSelector } from "react-redux";
 import PostCard from "../components/PostCard";
 import { Button } from "flowbite-react";
 
 export default function Posts() {
-  const { currentUser } = useSelector((state: RootState) => state.user);
   const [posts, setPosts] = useState<IPost[]>([]);
   const [showMore, setShowMore] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(true);
