@@ -50,7 +50,7 @@ body {
 }
 .post-content a {
   color: rgb(73, 149, 199);
-  text-decoration: underline;
+  text-decoration: none;
 }
 .post-content a:hover {
   text-decoration: underline;
@@ -58,6 +58,7 @@ body {
 .dark .post-content a {
   color: rgb(2, 149, 255);
 }
+
 .post-content code {
   font-family: monospace;
   background-color: rgba(0, 0, 0, 0.05);

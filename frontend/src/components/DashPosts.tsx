@@ -31,10 +31,9 @@ export default function DashPosts() {
         console.log(error);
       }
     };
-    if (currentUser?.isAdmin) {
-      fetchPosts();
-    }
-  }, [currentUser?._id]);
+
+    fetchPosts();
+  }, []);
 
   const handleShowMore = async () => {
     const startIndex = userPosts.length;

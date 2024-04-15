@@ -26,10 +26,9 @@ export default function DashComments() {
         console.log(error);
       }
     };
-    if (currentUser?.isAdmin) {
-      fetcComments();
-    }
-  }, [currentUser?._id]);
+
+    fetcComments();
+  }, []);
 
   const handleShowMore = async () => {
     const startIndex = comments.length;

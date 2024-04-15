@@ -119,10 +119,18 @@ export default function Search() {
           <div className="flex items-center gap-2">
             <label className="wwhitespace-nowrap font-semibold">Catergory:</label>
             <Select onChange={handleChange} value={sidebarData.category} id="category">
-              <option value="uncategorized">uncategorized </option>
+              <option value="uncategorized">Select a catergory</option>
               <option value="react">React</option>
+              <option value="vue">Vue</option>
+              <option value="angular">Angular</option>
               <option value="next">Next</option>
-              <option value="javascript">Javascript</option>
+              <option value="Javascript">javascript</option>
+              <option value="typescript">Typescript</option>
+              <option value="nodejs">NodeJs</option>
+              <option value="state mangement">State Mangement</option>
+              <option value="css">CSS</option>
+              <option value="html">HTML</option>
+              <option value="testing">Testing</option>
             </Select>
           </div>
           <Button type="submit" gradientDuoTone="purpleToBlue" pill>
