@@ -19,12 +19,11 @@ import Posts from "./pages/Posts";
 import Search from "./pages/Search";
 
 const App = () => {
-  const { theme } = useSelector((state: RootState) => state.theme);
   const { currentUser } = useSelector((state: RootState) => state.user);
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <ToastContainer pauseOnFocusLoss={false} theme={theme} />
+      <ToastContainer pauseOnFocusLoss={false} />
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />

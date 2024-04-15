@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
-    <section className="h-[calc(100vh-142px)] bg-white dark:bg-gray-900">
+    <section className="h-[calc(100vh-137px)]  ">
       <div className="flex h-[calc(100%-200px)] flex-col justify-center items-center">
         <h1 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">
           Welcome to my blog!

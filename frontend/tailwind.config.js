@@ -10,6 +10,15 @@ export default {
       animation: {
         moveRightToLeft: "moveRightToLeft 1s infinite linear",
       },
+      colors: {
+        text: "var(--text)",
+        background: "var(--background)",
+        backgroundSecondary: "var(--background-secondary)",
+        primary: "var(--primary)",
+        secondary: "var(--secondary)",
+        accent: "var(--accent)",
+      },
+
       keyframes: {
         moveRightToLeft: {
           "0%,100%": { transform: "translateX(2px)" },

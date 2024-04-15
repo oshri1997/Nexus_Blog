@@ -57,12 +57,12 @@ export default function Header() {
     navigate(`/search?searchTerm=${searchTerm}`);
   };
   return (
-    <Navbar className="border-b-2">
+    <Navbar className="border-b-2 !bg-backgroundSecondary">
       <Link
         to="/"
         className="self-center  whitespace-nowrap text-white text-base sm:text-xl   px-2 py-1 rounded-lg   bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  font-semibold  dark:text-white"
       >
-        Nexus Blog
+        Dev Lab
       </Link>
       <form onSubmit={handleSubmit}>
         <TextInput

@@ -1,4 +1,4 @@
-import { Sidebar } from "flowbite-react";
+import { CustomFlowbiteTheme, Sidebar } from "flowbite-react";
 import { useEffect, useState } from "react";
 import {
   HiArrowSmRight,
@@ -48,9 +48,9 @@ export default function DashSidebar() {
   };
 
   return (
-    <Sidebar className="md:w-56 w-full">
+    <Sidebar className="md:w-56 w-full ">
       <Sidebar.Items>
-        <Sidebar.ItemGroup className="flex flex-col gap-1">
+        <Sidebar.ItemGroup className="flex flex-col gap-1 ">
           <Link to="/dashboard?tab=profile">
             <Sidebar.Item
               active={tab === "profile"}
