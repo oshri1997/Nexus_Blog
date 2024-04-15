@@ -19,7 +19,7 @@ export default function Dashboard() {
   }, [searchParams]);
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
+    <div className="min-h-screen flex !bg-background flex-col md:flex-row">
       <div>
         {/* Sidebar */}
         <DashSidebar />

@@ -33,7 +33,6 @@ export default function Search() {
         if (response.ok) {
           setLoading(false);
           setPosts(data.posts);
-          console.log(data.posts.length);
           if (data.posts.length === 9) {
             setShowMore(true);
           } else {

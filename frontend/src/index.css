@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --text: #040a1b;
+    --background: #edf0fd;
+    --background-secondary: #e1e5f5;
+    --primary: #3561e3;
+    --secondary: #9679ec;
+    --accent: #8f50e7;
+  }
+  .dark {
+    --text: #e4eafb;
+    --background: #0a0e1c;
+    --background-secondary: #15192a;
+    --primary: #1c47ca;
+    --secondary: #301386;
+    --accent: #5718af;
+  }
+}
+
 body {
   height: 100vh;
 }
@@ -75,3 +94,10 @@ body {
   margin-bottom: 0.5rem;
 }
 /* dark mode */
+
+nav[aria-label="Sidebar"] > div {
+  background: var(--background-secondary) !important;
+}
+.dark > div {
+  @apply !bg-background min-h-screen;
+}
