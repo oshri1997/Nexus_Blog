@@ -1,5 +1,5 @@
 import Post from "../models/post.model.js";
-
+import Comment from "../models/comment.model.js";
 export const createController = async (req, res, next) => {
   if (!req.user.isAdmin) {
     return next({ status: 401, message: "You are not authorized to create a post" });
@@ -61,6 +61,7 @@ export const deletePostController = async (req, res, next) => {
   }
   try {
     await Post.findByIdAndDelete(req.params.postid);
+    await Comment.deleteMany({ postId: req.params.postid });
     res.status(200).json({ message: "Post deleted successfully" });
   } catch (error) {
     next({ status: 400, message: error });

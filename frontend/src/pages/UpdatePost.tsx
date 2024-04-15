@@ -74,7 +74,6 @@ export default function UpdatePost() {
   };
   const handleChangeInput = (e: any) => {
     setFormData({ ...formData!, [e.target.id]: e.target.value });
-    console.log(formData);
   };
   const handleSubmitPost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
