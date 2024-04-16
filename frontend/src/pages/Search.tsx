@@ -140,7 +140,7 @@ export default function Search() {
       </div>
       <div className="w-full">
         {
-          <div className="grid grid-cols-1 gap-4 p-7 md:grid-cols-3">
+          <div className="grid grid-cols-1  xl:grid-cols-2  gap-4 p-7 2xl:grid-cols-3 ">
             {loading && <p>Loading...</p>}
             {!loading && posts.length === 0 && <p> No Posts Found</p>}
             {!loading && posts.map((post) => <PostCard key={post._id} post={post} />)}
